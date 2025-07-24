@@ -1,0 +1,21 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+
+# Include the targets file
+include("${CMAKE_CURRENT_LIST_DIR}/minijinjaTargets.cmake")
+
+# Check if the target exists
+if(NOT TARGET minijinja::cabi)
+    include("${CMAKE_CURRENT_LIST_DIR}/minijinjaTargets.cmake")
+endif()
+
+# Set variables for compatibility
+set(MINIJINJA_FOUND TRUE)
+set(MINIJINJA_VERSION "@PROJECT_VERSION@")
+
+# Provide legacy variables
+set(MINIJINJA_LIBRARIES minijinja::cabi)
+get_target_property(MINIJINJA_INCLUDE_DIRS minijinja::cabi INTERFACE_INCLUDE_DIRECTORIES)
+
+check_required_components(minijinja)
