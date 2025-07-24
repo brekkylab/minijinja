@@ -14,6 +14,7 @@ ffi_fn! {
     unsafe fn mj_env_new(_scope) -> *mut mj_env {
         let mut inner = Environment::new();
         minijinja_contrib::add_to_environment(&mut inner);
+        inner.set_unknown_method_callback(minijinja_contrib::pycompat::unknown_method_callback);
         Box::into_raw(Box::new(mj_env(inner)))
     }
 }
