@@ -1975,6 +1975,7 @@ name = "minijinja-cabi"
 version = "2.11.0"
 dependencies = [
  "minijinja",
+ "minijinja-contrib",
 ]
 
 [[package]]
