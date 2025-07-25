@@ -8,4 +8,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 minijinja = { version = "2.11.0", path = "../minijinja", features = ["loader", "custom_syntax"] }
-minijinja-contrib = { version = "2.11.0", path = "../minijinja-contrib", features = ["pycompat"] }
+minijinja-contrib = { version = "2.11.0", path = "../minijinja-contrib", features = ["pycompat"], optional = true }
+
+[features]
+contrib = ["dep:minijinja-contrib"]

@@ -12,10 +12,17 @@ pub struct mj_env(pub(crate) Environment<'static>);
 ffi_fn! {
     /// Allocates a new and empty MiniJinja environment.
     unsafe fn mj_env_new(_scope) -> *mut mj_env {
-        let mut inner = Environment::new();
-        minijinja_contrib::add_to_environment(&mut inner);
-        inner.set_unknown_method_callback(minijinja_contrib::pycompat::unknown_method_callback);
-        Box::into_raw(Box::new(mj_env(inner)))
+        #[cfg(feature = "contrib")]
+        {
+            let mut inner = Environment::new();
+            minijinja_contrib::add_to_environment(&mut inner);
+            inner.set_unknown_method_callback(minijinja_contrib::pycompat::unknown_method_callback);
+            Box::into_raw(Box::new(mj_env(inner)))
+        }
+        #[cfg(not(feature = "contrib"))]
+        {
+            Box::into_raw(Box::new(mj_env(Environment::new())))
+        }
     }
 }
 

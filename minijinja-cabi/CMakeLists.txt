@@ -18,8 +18,9 @@ if(POLICY CMP0091)
 endif()
 
 # Options
+option(MINIJINJA_CONTRIB_ENABLED "Enable minijinja-contrib" ON)
 option(MINIJINJA_BUILD_SHARED "Build shared library" OFF)
-option(MINIJINJA_INSTALL "Install the library" ON)
+option(MINIJINJA_INSTALL "Install the library" OFF)
 
 # Platform and architecture detection for Rust target
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/minijinjaRustTargets.cmake)
@@ -88,6 +89,10 @@ add_custom_command(
     COMMENT "Installing Rust target: ${MINIJINJA_RUST_TARGET}"
     VERBATIM
 )
+
+if(MINIJINJA_CONTRIB_ENABLED)
+    list(APPEND CARGO_BUILD_FLAGS "--features=contrib")
+endif()
 
 # Build the cargo command list
 set(CARGO_BUILD_COMMAND
