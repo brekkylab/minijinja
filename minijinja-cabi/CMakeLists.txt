@@ -157,10 +157,15 @@ endif()
 # Cargo Build Command
 # ==============================================================================
 
+set(CARGO_BUILD_USE_NIGHTLY "")
+if(MINIJINJA_RUST_NIGHTLY)
+    set(CARGO_BUILD_USE_NIGHTLY "+nightly")
+endif()
+
 # Build the cargo command list
 set(CARGO_BUILD_COMMAND
     ${CMAKE_COMMAND} -E env ${CARGO_ENV_VARS}
-    ${CARGO_EXECUTABLE} rustc
+    ${CARGO_EXECUTABLE} ${CARGO_BUILD_USE_NIGHTLY} rustc
     ${MINIJINJA_CARGO_BUILD_FLAGS}
 )
 
