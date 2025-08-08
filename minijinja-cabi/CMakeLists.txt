@@ -103,25 +103,6 @@ endif()
 set(RUST_LIB_PATH "${RUST_LIB_DIR}/${RUST_LIB_NAME}")
 
 # ==============================================================================
-# Rust Target Installation
-# ==============================================================================
-
-# Prepare rustup target flags
-set(RUSTUP_TARGET_FLAGS "")
-if(MINIJINJA_RUST_NIGHTLY)
-    list(APPEND RUSTUP_TARGET_FLAGS "--toolchain=nightly")
-endif()
-
-# Install Rust target if needed
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/rust_target_check.stamp
-    COMMAND rustup target add ${MINIJINJA_RUST_TARGET} ${RUSTUP_TARGET_FLAGS}
-    COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/rust_target_check.stamp
-    COMMENT "Installing Rust target: ${MINIJINJA_RUST_TARGET}"
-    VERBATIM
-)
-
-# ==============================================================================
 # Cargo Build Environment
 # ==============================================================================
 
@@ -172,7 +153,6 @@ set(CARGO_BUILD_COMMAND
 # Custom command to build the Rust library
 add_custom_command(
     OUTPUT ${RUST_LIB_PATH}
-    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/rust_target_check.stamp
     COMMAND ${CARGO_BUILD_COMMAND}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMENT "Building minijinja for ${MINIJINJA_RUST_TARGET} (${CARGO_BUILD_TYPE})"
